@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYCU IIM 統計學衝刺筆記 (完整版)</title>
+    <!-- 引入 MathJax 支援數學公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #003366; /* 交大藍風格 */
+            --secondary-color: #f0f4f8;
+            --accent-color: #d32f2f;
+            --potential-color: #00796b; /* 第二梯隊顏色 */
+            --text-color: #333;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        h1 { margin: 0; font-size: 2.2em; }
+        h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            color: var(--primary-color);
+        }
+        h3 {
+            color: #444;
+            margin-top: 30px;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 10px;
+            background-color: #fafafa;
+            padding: 5px 10px;
+        }
+        .theorem-box {
+            background-color: var(--secondary-color);
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+        .definition-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+        .theorem-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            display: block;
+        }
+        .def-title {
+            font-weight: bold;
+            color: #000;
+            font-size: 1.05em;
+        }
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        ul { margin-bottom: 15px; padding-left: 20px;}
+        li { margin-bottom: 8px; }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #777;
+            border-top: 1px solid #ddd;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 5px;
+            vertical-align: middle;
+            color: white;
+        }
+        .must-read { background: var(--accent-color); }
+        .should-read { background: var(--potential-color); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>國立陽明交通大學經管所<br>統計學衝刺筆記 (完整版)</h1>
+        <p>包含核心定理、必考定義與潛力考點</p>
+    </header>
+
+    <div id="content">
+        
+        <h2>第一部分：絕對核心定理 (Theorem Statements)</h2>
+        <p>這些定理必須能用英文寫出完整的數學敘述（假設 Let... + 結論 Then...）。</p>
+
+        <div class="theorem-box">
+            <span class="theorem-title">1. Central Limit Theorem (CLT) <span class="tag must-read">必背</span></span>
+            Let \(X_1, ..., X_n \overset{iid}{\sim} (\mu, \sigma^2)\). Then as \(n \to \infty\):
+            $$ \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0,1) $$
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">2. Factorization Theorem (分解定理) <span class="tag must-read">必背</span></span>
+            A statistic \(T(X)\) is sufficient for \(\theta\) if and only if the joint pdf/pmf can be factored as:
+            $$ f(x|\theta) = g(T(x)|\theta)h(x) $$
+            <div class="note">用途：尋找充分統計量最快的方法。</div>
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">3. Neyman-Pearson Lemma (N-P 引理) <span class="tag must-read">必背</span></span>
+            For testing \(H_0: \theta=\theta_0\) vs \(H_1: \theta=\theta_1\), the test with rejection region \(R\) given by:
+            $$ x \in R \iff \frac{L(\theta_0)}{L(\theta_1)} \le k $$
+            is the <strong>Most Powerful (MP)</strong> test of size \(\alpha\), where \(k\) is determined by \(P(x \in R | H_0) = \alpha\).
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">4. Rao-Blackwell Theorem <span class="tag must-read">必背</span></span>
+            Let \(\hat{\theta}\) be an unbiased estimator and \(T\) be a sufficient statistic for \(\theta\). Define \(\phi(T) = E[\hat{\theta}|T]\). Then:
+            1. \(\phi(T)\) is unbiased: \(E[\phi(T)] = \theta\).
+            2. \(Var(\phi(T)) \le Var(\hat{\theta})\).
+            <div class="note">用途：改進估計量，使其變異數變小。</div>
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">5. Lehmann-Scheffé Theorem <span class="tag must-read">必背</span></span>
+            If \(T\) is a <strong>complete</strong> and <strong>sufficient</strong> statistic for \(\theta\), and \(\phi(T)\) is an unbiased estimator of \(\theta\), then \(\phi(T)\) is the unique <strong>UMVUE</strong> of \(\theta\).
+            <div class="note">用途：尋找最佳不偏估計量 (Best Unbiased Estimator)。</div>
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">6. Gauss-Markov Theorem <span class="tag must-read">必背</span></span>
+            In a linear regression model \(Y = X\beta + \epsilon\) with \(E[\epsilon]=0\), \(Var(\epsilon)=\sigma^2 I\) (homoscedasticity, no serial correlation), the Ordinary Least Squares (OLS) estimators are <strong>BLUE</strong> (Best Linear Unbiased Estimators).
+        </div>
+
+        <div class="theorem-box">
+            <span class="theorem-title">7. Cochran’s Theorem</span>
+            Let \(Z_1, ..., Z_n \overset{iid}{\sim} N(0,1)\). If \(\sum Z_i^2 = Q_1 + ... + Q_k\), then \(Q_i \sim \chi^2(v_i)\) are independent if and only if \(\sum v_i = n\).
+            <div class="note">用途：推導 \(\bar{X}\) 與 \(S^2\) 獨立，以及 \((n-1)S^2/\sigma^2 \sim \chi^2(n-1)\)。</div>
+        </div>
+
+        <h2>第二部分：重要名詞定義 (Definitions)</h2>
+        <p>適用於 "Explain the term" 或 "True/False" 題型。包含核心與潛力考點。</p>
+
+        <h3>A. 統計推論基礎 (Inference)</h3>
+        <div class="definition-item">
+            <span class="def-title">p-value (p值)</span> <span class="tag must-read">必背</span><br>
+            The probability of observing a test statistic as extreme as, or more extreme than, the one observed, <span class="highlight">assuming \(H_0\) is true</span>.
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Type I Error (\(\alpha\)) / Type II Error (\(\beta\))</span><br>
+            Type I: Rejecting \(H_0\) when \(H_0\) is true.<br>
+            Type II: Failing to reject \(H_0\) when \(H_1\) is true.
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Power of a Test (\(1-\beta\))</span><br>
+            The probability of rejecting \(H_0\) when \(H_1\) is true. (即檢定力)
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Consistent Estimator (一致估計量)</span> <span class="tag must-read">必背</span><br>
+            An estimator \(\hat{\theta}_n\) such that \(\hat{\theta}_n \xrightarrow{P} \theta\) as \(n \to \infty\). (即樣本數無限大時，估計量機率收斂至真值)。
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Sufficient Statistic (充分統計量)</span><br>
+            A statistic \(T(X)\) that contains all the information in the sample about \(\theta\). Formally, the conditional distribution of the sample given \(T\) is independent of \(\theta\).
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Complete Statistic (完備統計量)</span> <span class="tag should-read">潛力</span><br>
+            A statistic \(T\) is complete if \(E[g(T)] = 0\) for all \(\theta\) implies \(P(g(T)=0) = 1\) for all \(\theta\). (UMVUE 的先決條件)。
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Likelihood Ratio Statistic (\(\lambda\))</span> <span class="tag should-read">潛力</span><br>
+            $$ \lambda(x) = \frac{\sup_{\theta \in \Theta_0} L(\theta|x)}{\sup_{\theta \in \Theta} L(\theta|x)} $$
+            (檢定統計量的理論源頭，如 F test)。
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Mean Squared Error (MSE)</span> <span class="tag should-read">潛力</span><br>
+            \(MSE(\hat{\theta}) = E[(\hat{\theta}-\theta)^2] = Var(\hat{\theta}) + [Bias(\hat{\theta})]^2\). (必背此分解式)。
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Fisher Information</span> <span class="tag should-read">潛力</span><br>
+            \(I(\theta) = -E\left[ \frac{\partial^2}{\partial \theta^2} \ln f(X;\theta) \right]\). (計算 CRLB 用)。
+        </div>
+
+        <h3>B. 迴歸分析 (Regression)</h3>
+        <div class="definition-item">
+            <span class="def-title">Multicollinearity (共線性)</span> <span class="tag must-read">必背</span><br>
+            High correlation among independent variables (\(X\)'s), leading to unstable \(\hat{\beta}\) estimates and large standard errors.
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Heteroscedasticity (異質變異數)</span><br>
+            The variance of error terms is not constant (\(Var(\epsilon_i) \neq \sigma^2\)).
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Autocorrelation (自我相關)</span> <span class="tag must-read">必背</span><br>
+            Error terms are correlated over time (e.g., \(Cov(\epsilon_t, \epsilon_{t-1}) \neq 0\)). Commonly found in time series data.
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Coefficient of Determination (\(R^2\))</span><br>
+            The proportion of the total variation in \(Y\) that is explained by the regression model (\(SSR/SSTO\)).
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Residual vs. Error</span> <span class="tag should-read">潛力</span><br>
+            <strong>Error (\(\epsilon\)):</strong> \(Y - E[Y]\) (Unobservable, true population error).<br>
+            <strong>Residual (\(e\)):</strong> \(Y - \hat{Y}\) (Observable, sample estimation error).
+        </div>
+
+        <h3>C. 機率與隨機變數 (Probability)</h3>
+        <div class="definition-item">
+            <span class="def-title">Conditional Expectation</span><br>
+            \(E[Y|X]\) is a <strong>random variable</strong> that represents the average value of \(Y\) for a given \(X\).
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Moment Generating Function (MGF)</span> <span class="tag should-read">潛力</span><br>
+            \(M_X(t) = E[e^{tX}]\). Uniquely determines the distribution.
+        </div>
+        <div class="definition-item">
+            <span class="def-title">Convergence in Probability vs. Distribution</span> <span class="tag should-read">潛力</span><br>
+            \(\xrightarrow{P}\): Limit of probability (\(P(|X_n-X|>\epsilon) \to 0\)).<br>
+            \(\xrightarrow{d}\): Limit of CDF (\(F_n(x) \to F(x)\)).
+        </div>
+
+        <h2>第三部分：必備數理推導技巧 (SOP)</h2>
+        
+        <h3>1. 尋找 UMVUE (三步殺)</h3>
+        <ol>
+            <li><strong>Factorization Thm:</strong> 找出充分統計量 \(T\)。</li>
+            <li><strong>Unbiasedness:</strong> 找一個不偏估計量（或是修正 \(T\) 使其不偏）。</li>
+            <li><strong>Lehmann-Scheffé:</strong> 宣稱 \(T\) 是完備的（指數族性質），則該不偏估計量即為 UMVUE。</li>
+        </ol>
+
+        <h3>2. AR(1) 模型變異數推導 (必背結論)</h3>
+        <p>若 \( \epsilon_t = \rho \epsilon_{t-1} + u_t \)，其中 \(u_t \sim N(0, \sigma_u^2)\) 且 \(|\rho|<1\)，則：</p>
+        $$ Var(\epsilon_t) = \frac{\sigma_u^2}{1-\rho^2} $$
+        $$ Cov(\epsilon_t, \epsilon_{t-k}) = \frac{\sigma_u^2}{1-\rho^2} \rho^k $$
+
+        <h3>3. Cramér-Rao Lower Bound (CRLB)</h3>
+        $$ Var(\hat{\theta}) \ge \frac{1}{n I(\theta)}, \quad I(\theta) = -E\left[ \frac{\partial^2 \ln f(X;\theta)}{\partial \theta^2} \right] $$
+
+        <h2>第四部分：準備策略提醒</h2>
+        <ul>
+            <li><strong>時間分配：</strong> 迴歸分析 (30%) + 數統定理背誦 (30%) + 考古題實戰 (40%)。</li>
+            <li><strong>放棄項目：</strong> 複雜積分、無母數排序檢定 (Sign/Wilcoxon)、Black-Scholes 模型。</li>
+            <li><strong>每天任務：</strong> 默寫 2-3 個定理定義，直到能像反射動作一樣寫出來。</li>
+        </ul>
+
+    </div>
+
+    <footer>
+        <p>交大經管 75 天衝刺筆記 | 祝金榜題名！</p>
+    </footer>
+</div>
+
+</body>
+</html>
