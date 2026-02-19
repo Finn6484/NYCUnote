@@ -1,282 +1,457 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NYCU IIM 統計學衝刺筆記 (完整版)</title>
-    <!-- 引入 MathJax 支援數學公式 -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Polymarket Bot - 使用說明手冊</title>
+    <!-- Reuse dashboard CSS for consistent theme -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #003366; /* 交大藍風格 */
-            --secondary-color: #f0f4f8;
-            --accent-color: #d32f2f;
-            --potential-color: #00796b; /* 第二梯隊顏色 */
-            --text-color: #333;
+            --bg-body: #0f111a;
+            --bg-card: #1a1d2d;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-color: #2d3748;
         }
+
         body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
             line-height: 1.6;
-            color: var(--text-color);
             margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
+            padding: 20px;
         }
+
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding-bottom: 50px;
         }
+
         header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
-        h1 { margin: 0; font-size: 2.2em; }
-        h2 {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-top: 40px;
-            color: var(--primary-color);
-        }
+
+        h1,
+        h2,
         h3 {
-            color: #444;
-            margin-top: 30px;
-            border-left: 5px solid var(--accent-color);
-            padding-left: 10px;
-            background-color: #fafafa;
-            padding: 5px 10px;
+            color: var(--text-primary);
         }
-        .theorem-box {
-            background-color: var(--secondary-color);
-            border-left: 5px solid var(--primary-color);
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 3px;
+
+        h1 {
+            font-size: 2rem;
+            margin: 0;
         }
-        .definition-item {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed #eee;
+
+        h2 {
+            margin-top: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            color: var(--accent-primary);
         }
-        .theorem-title {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-            display: block;
+
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--text-primary);
         }
-        .def-title {
-            font-weight: bold;
-            color: #000;
-            font-size: 1.05em;
+
+        h4 {
+            margin-top: 1.2rem;
+            color: var(--text-secondary);
         }
-        .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
+
+        .back-btn {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
         }
-        .note {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-            font-style: italic;
+
+        .back-btn:hover {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
         }
-        ul { margin-bottom: 15px; padding-left: 20px;}
-        li { margin-bottom: 8px; }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #777;
-            border-top: 1px solid #ddd;
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .tag {
-            display: inline-block;
+
+        code {
+            background-color: rgba(0, 0, 0, 0.3);
             padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.8em;
-            margin-left: 5px;
-            vertical-align: middle;
-            color: white;
+            font-family: monospace;
+            color: var(--accent-primary);
         }
-        .must-read { background: var(--accent-color); }
-        .should-read { background: var(--potential-color); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--accent-primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .badge-green {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .badge-red {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .badge-blue {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--accent-primary);
+        }
+
+        .math-block {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 1rem 0;
+            border-left: 3px solid var(--accent-primary);
+            font-size: 1.1em;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
     </style>
+    <!-- MathJax for rendering formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
 <body>
 
-<div class="container">
-    <header>
-        <h1>國立陽明交通大學經管所<br>統計學衝刺筆記 (完整版)</h1>
-        <p>包含核心定理、必考定義與潛力考點</p>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Polymarket 交易機器人說明手冊</h1>
+            <a href="/" class="back-btn">← 返回儀表板</a>
+        </header>
 
-    <div id="content">
-        
-        <h2>第一部分：絕對核心定理 (Theorem Statements)</h2>
-        <p>這些定理必須能用英文寫出完整的數學敘述（假設 Let... + 結論 Then...）。</p>
-
-        <div class="theorem-box">
-            <span class="theorem-title">1. Central Limit Theorem (CLT) <span class="tag must-read">必背</span></span>
-            Let \(X_1, ..., X_n \overset{iid}{\sim} (\mu, \sigma^2)\). Then as \(n \to \infty\):
-            $$ \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0,1) $$
+        <div class="card">
+            <p>本手冊詳細說明 Polymarket 交易機器人的功能、策略邏輯以及各項指標的含義。目前的系統主要包含兩種核心交易模式：「波動率套利 (EWMA & GARCH)」與「趨勢跟隨 (Trend
+                Following)」。</p>
         </div>
 
-        <div class="theorem-box">
-            <span class="theorem-title">2. Factorization Theorem (分解定理) <span class="tag must-read">必背</span></span>
-            A statistic \(T(X)\) is sufficient for \(\theta\) if and only if the joint pdf/pmf can be factored as:
-            $$ f(x|\theta) = g(T(x)|\theta)h(x) $$
-            <div class="note">用途：尋找充分統計量最快的方法。</div>
+        <div class="card">
+            <h2>1. 波動率套利模式 (EWMA & GARCH Volatility)</h2>
+            <p>此模式專為預測比特幣價格波動範圍而設計，利用統計學模型計算合理的「極限價格 (Limit Price)」，並在價格偏離時進行套利。</p>
+
+            <h3>核心邏輯：非對稱溢價模型 (Asymmetric Premium Model)</h3>
+            <p>最新的模型採用了「非對稱定價」邏輯，這意味著 <strong>上漲 (UP)</strong> 和 <strong>下跌 (DOWN)</strong> 的合約價格不再是對稱的，而是會根據市場的
+                <strong>漂移 (Drift)</strong> 方向進行調整。</p>
+
+            <h3>指標深度解析 (Indicator Deep Dive)</h3>
+            <p>下表詳細說明了各項指標數值高低的具體含義與操作影響：</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%">指標 (Indicator)</th>
+                        <th style="width: 10%">數值狀態</th>
+                        <th style="width: 15%">數值範圍範例</th>
+                        <th style="width: 30%">代表意義 (Meaning)</th>
+                        <th style="width: 30%">對策略的影響 (Impact)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- EWMA Vol -->
+                    <tr>
+                        <td rowspan="3"><strong>EWMA Vol</strong></td>
+                        <td><span class="badge badge-blue">低 (Low)</span></td>
+                        <td>&lt; 0.002</td>
+                        <td>市場極度平靜，價格窄幅震盪。</td>
+                        <td>系統會進入觀望模式或設定非常保守的價格，因為預期獲利空間小。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-green">中 (Medium)</span></td>
+                        <td>0.002 - 0.005</td>
+                        <td>標準的市場波動，適合套利。</td>
+                        <td>系統會採用平衡策略 (Balanced)，定價在合理區間。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-red">高 (High)</span></td>
+                        <td>&gt; 0.005</td>
+                        <td>市場劇烈波動，可能有大行情。</td>
+                        <td>系統會變得激進，提高賣出價格以捕捉更高的溢價。</td>
+                    </tr>
+
+                    <!-- Vol Trend -->
+                    <tr>
+                        <td rowspan="3"><strong>Vol Trend</strong></td>
+                        <td>&lt; 1.0</td>
+                        <td>0.5 - 0.9</td>
+                        <td>波動率正在下降 (縮量)。</td>
+                        <td>市場正在冷卻，系統可能會降低預期溢價。</td>
+                    </tr>
+                    <tr>
+                        <td>&gt; 1.0</td>
+                        <td>1.1 - 1.4</td>
+                        <td>波動率正在上升 (溫和放量)。</td>
+                        <td>市場趨於活躍，定價會微幅上調。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-red">爆發</span></td>
+                        <td>&gt; 1.5</td>
+                        <td><strong>Breakout!</strong> 波動率暴漲。</td>
+                        <td>觸發 <code>EWMA_BREAKOUT</code> 模式，大幅提高賣出價格，防止賣飛。</td>
+                    </tr>
+
+                    <!-- IV/GARCH Ratio -->
+                    <tr>
+                        <td rowspan="3"><strong>IV/GARCH Ratio</strong></td>
+                        <td><span class="badge badge-blue">低 (Dead)</span></td>
+                        <td>&lt; 0.8</td>
+                        <td>隱含波動率低於統計波動率。</td>
+                        <td>代表市場過於悲觀或死寂。系統取最小值 (Min Premium) 進行保守定價。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-green">正常 (Normal)</span></td>
+                        <td>0.8 - 1.2</td>
+                        <td>市場預期與統計相符。</td>
+                        <td>系統取平均值 (Average Premium)。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-red">高 (Panic)</span></td>
+                        <td>&gt; 1.2</td>
+                        <td>市場極度恐慌/貪婪。</td>
+                        <td>觸發 <code>PANIC</code> 模式，系統取最大值 (Max Premium) 貪婪定價，吃盡市場溢價。</td>
+                    </tr>
+
+                    <!-- Drift -->
+                    <tr>
+                        <td rowspan="3"><strong>Drift (μ)</strong></td>
+                        <td><span class="badge badge-green">正 (+)</span></td>
+                        <td>&gt; 0.001</td>
+                        <td>上升趨勢 (Uptrend)。</td>
+                        <td><strong>Skew &gt; 0</strong>。UP 賣價提高 (惜售)，DOWN 賣價降低 (快跑)。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-red">負 (-)</span></td>
+                        <td>&lt; -0.001</td>
+                        <td>下降趨勢 (Downtrend)。</td>
+                        <td><strong>Skew &lt; 0</strong>。DOWN 賣價提高 (惜售)，UP 賣價降低 (快跑)。</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-blue">零 (Flat)</span></td>
+                        <td>±0.0005</td>
+                        <td>盤整無方向。</td>
+                        <td><strong>Skew ≈ 0</strong>。UP 與 DOWN 價格對稱。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>數學模型詳解 (Mathematical Models)</h3>
+            <p>本策略並非憑空猜測，而是基於嚴謹的金融數學公式。以下是核心公式的簡化說明：</p>
+
+            <h4>1. EWMA (指數加權移動平均波動率)</h4>
+            <div class="math-block">
+                $$ \sigma_t^2 = \lambda \sigma_{t-1}^2 + (1-\lambda) r_{t-1}^2 $$
+            </div>
+            <ul>
+                <li>我們給予最近的價格回報 (\(r_{t-1}\)) 更大的權重。</li>
+                <li>\(\lambda = 0.94\)，這意味著我們非常重視最近的市場變化，能比傳統 MA 更快反應。</li>
+            </ul>
+
+            <h4>2. Drift (趨勢漂移項)</h4>
+            <div class="math-block">
+                $$ \text{Drift}(\mu) = \ln \left( \frac{\text{Current Price}}{\text{EMA}_{30}} \right) $$
+            </div>
+            <ul>
+                <li>計算當前價格相對於 30 分鐘均線的對數偏差。</li>
+                <li>這捕捉了市場的<strong>瞬時動能</strong>。</li>
+            </ul>
+
+            <h4>3. Limit Price (極限價格計算)</h4>
+            <div class="math-block">
+                $$ \text{Price}_{\text{UP}} = 0.50 + \text{Base Premium} + (\text{Drift} \times \gamma) $$
+                $$ \text{Price}_{\text{DOWN}} = 0.50 + \text{Base Premium} - (\text{Drift} \times \gamma) $$
+            </div>
+            <ul>
+                <li><strong>Base Premium</strong>：由 EWMA 和 GARCH 波動率共同決定。</li>
+                <li><strong>\(\gamma\) (Gamma)</strong>：漂移敏感度係數 (目前為 10)。Drift 越大，UP 和 DOWN 的價差越大。</li>
+            </ul>
+
+            <h4>4. Time Decay (時間衰減)</h4>
+            <div class="math-block">
+                $$ \text{Decay Multiplier} = \sqrt{\frac{\text{Minutes Remaining}}{60}} $$
+            </div>
+            <ul>
+                <li>模擬期權的 Theta 衰減。</li>
+                <li>在 60 分鐘時，Multiplier = 1.0 (全額溢價)。</li>
+                <li>在 15 分鐘時，Multiplier = 0.5 (溢價減半)。</li>
+                <li>這確保了我們不會在最後時刻還掛著不合理的高價。</li>
+            </ul>
         </div>
 
-        <div class="theorem-box">
-            <span class="theorem-title">3. Neyman-Pearson Lemma (N-P 引理) <span class="tag must-read">必背</span></span>
-            For testing \(H_0: \theta=\theta_0\) vs \(H_1: \theta=\theta_1\), the test with rejection region \(R\) given by:
-            $$ x \in R \iff \frac{L(\theta_0)}{L(\theta_1)} \le k $$
-            is the <strong>Most Powerful (MP)</strong> test of size \(\alpha\), where \(k\) is determined by \(P(x \in R | H_0) = \alpha\).
+        <div class="card">
+            <h2>2. 趨勢跟隨模式 (Trend Following)</h2>
+            <p>此模式用於捕捉單邊行情，結合了線性回歸 (Linear Regression)、移動平均線 (EMA) 和布林通道 (Bollinger Bands)。</p>
+
+            <h3>關鍵指標解釋</h3>
+            <ul>
+                <li>
+                    <strong>Linear Regression Slope (線性回歸斜率)</strong>
+                    <ul>
+                        <li><strong>意義</strong>：最核心的趨勢指標。計算價格走勢的數學斜率。</li>
+                        <li><strong>判斷</strong>：斜率 > 閾值為 <strong>UP</strong>，斜率 < -閾值為 <strong>DOWN</strong>，接近 0 為盤整。
+                        </li>
+                    </ul>
+                </li>
+                <br>
+                <li>
+                    <strong>R-Squared (R² - 決定係數)</strong>
+                    <ul>
+                        <li><strong>意義</strong>：趨勢的「穩定性」或「信心度」。</li>
+                        <li><strong>判斷</strong>：R² > 0.3：趨勢形成，值得參考。R² < 0.3：趨勢不明顯。</li>
+                    </ul>
+                </li>
+                <br>
+                <li>
+                    <strong>EMA (20-Period Exponential Moving Average)</strong>
+                    <ul>
+                        <li><strong>意義</strong>：短期均線，用來確認趨勢方向。</li>
+                        <li><strong>策略</strong>：價格 > EMA 且 EMA 向上確認看漲；反之看跌。</li>
+                    </ul>
+                </li>
+                <br>
+                <li>
+                    <strong>Bollinger Bands (布林通道)</strong>
+                    <ul>
+                        <li><strong>意義</strong>：衡量價格是否過度偏離均線 (超買/超賣)。</li>
+                        <li><strong>逆勢策略</strong>：
+                            <ul>
+                                <li><strong>Bollinger Bounce</strong>：如果整體趨勢向上 (Slope > 0)，但價格跌破下軌 (Lower Band)，視為買入機會
+                                    (回調買入)。</li>
+                                <li><strong>Bollinger Reversal</strong>：如果整體趨勢向下 (Slope < 0)，但價格突破上軌 (Upper Band)，視為做空機會
+                                        (反彈做空)。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
 
-        <div class="theorem-box">
-            <span class="theorem-title">4. Rao-Blackwell Theorem <span class="tag must-read">必背</span></span>
-            Let \(\hat{\theta}\) be an unbiased estimator and \(T\) be a sufficient statistic for \(\theta\). Define \(\phi(T) = E[\hat{\theta}|T]\). Then:
-            1. \(\phi(T)\) is unbiased: \(E[\phi(T)] = \theta\).
-            2. \(Var(\phi(T)) \le Var(\hat{\theta})\).
-            <div class="note">用途：改進估計量，使其變異數變小。</div>
+        <div class="card">
+            <h2>3. 儀表板 (Dashboard) 指南</h2>
+            <p>網頁介面 (<code>http://localhost:5000</code>) 提供了即時的市場狀態監控。</p>
+
+            <h3>主要區域說明</h3>
+            <ul>
+                <li>
+                    <strong>Regime (市場體制)</strong>：
+                    <ul>
+                        <li>顯示目前的波動率狀態 (NORMAL, PANIC, QUIET, DEAD)。由 <code>IV/GARCH Ratio</code> 決定。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Drift (μ)</strong>：
+                    <ul>
+                        <li>顯示目前的趨勢方向強度。綠色為正 (漲)，紅色為負 (跌)。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Skew</strong>：
+                    <ul>
+                        <li>顯示定價的偏移量。正值代表 UP 價格加成，負值代表 DOWN 價格加成。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Limit Price (UP/DOWN)</strong>：
+                    <ul>
+                        <li>系統計算出的「建議賣出價格」。當前市價若高於此價格，機器人會考慮賣出。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Method</strong>：
+                    <ul>
+                        <li>顯示當前使用的定價邏輯 (例如：<code>EWMA_BREAKOUT</code> 激進模式，或 <code>CONSERVATIVE</code> 保守模式)。</li>
+                    </ul>
+                </li>
+            </ul>
         </div>
 
-        <div class="theorem-box">
-            <span class="theorem-title">5. Lehmann-Scheffé Theorem <span class="tag must-read">必背</span></span>
-            If \(T\) is a <strong>complete</strong> and <strong>sufficient</strong> statistic for \(\theta\), and \(\phi(T)\) is an unbiased estimator of \(\theta\), then \(\phi(T)\) is the unique <strong>UMVUE</strong> of \(\theta\).
-            <div class="note">用途：尋找最佳不偏估計量 (Best Unbiased Estimator)。</div>
-        </div>
+        <div class="card">
+            <h2>4. 設定與調整 (Configuration)</h2>
+            <p>主要的系統設定位於 <code>config.py</code> 與 <code>.env</code> 文件。</p>
 
-        <div class="theorem-box">
-            <span class="theorem-title">6. Gauss-Markov Theorem <span class="tag must-read">必背</span></span>
-            In a linear regression model \(Y = X\beta + \epsilon\) with \(E[\epsilon]=0\), \(Var(\epsilon)=\sigma^2 I\) (homoscedasticity, no serial correlation), the Ordinary Least Squares (OLS) estimators are <strong>BLUE</strong> (Best Linear Unbiased Estimators).
+            <ul>
+                <li>
+                    <strong>Telegram & Discord 通知</strong>：
+                    <ul>
+                        <li>機器人會將交易執行、錯誤訊息、趨勢分析發送到配置的頻道。</li>
+                        <li>請確保 <code>.env</code> 中的 Token 和 Channel ID 正確。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>風險管理</strong>：
+                    <ul>
+                        <li><code>DEFAULT_TRADE_AMOUNT</code>：每筆交易的預設金額 (USD)。</li>
+                        <li><code>SLIPPAGE_BPS</code>：允許的滑點 (基點)，例如 200 = 2%。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>時間週期 (Timeframes)</strong>：
+                    <ul>
+                        <li>預設支援 <code>5m</code>, <code>15m</code>, <code>1h</code>, <code>4h</code>。</li>
+                        <li>EWMA/GARCH 模式主要針對 <code>1h</code> (Hourly) 市場設計。</li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-
-        <div class="theorem-box">
-            <span class="theorem-title">7. Cochran’s Theorem</span>
-            Let \(Z_1, ..., Z_n \overset{iid}{\sim} N(0,1)\). If \(\sum Z_i^2 = Q_1 + ... + Q_k\), then \(Q_i \sim \chi^2(v_i)\) are independent if and only if \(\sum v_i = n\).
-            <div class="note">用途：推導 \(\bar{X}\) 與 \(S^2\) 獨立，以及 \((n-1)S^2/\sigma^2 \sim \chi^2(n-1)\)。</div>
-        </div>
-
-        <h2>第二部分：重要名詞定義 (Definitions)</h2>
-        <p>適用於 "Explain the term" 或 "True/False" 題型。包含核心與潛力考點。</p>
-
-        <h3>A. 統計推論基礎 (Inference)</h3>
-        <div class="definition-item">
-            <span class="def-title">p-value (p值)</span> <span class="tag must-read">必背</span><br>
-            The probability of observing a test statistic as extreme as, or more extreme than, the one observed, <span class="highlight">assuming \(H_0\) is true</span>.
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Type I Error (\(\alpha\)) / Type II Error (\(\beta\))</span><br>
-            Type I: Rejecting \(H_0\) when \(H_0\) is true.<br>
-            Type II: Failing to reject \(H_0\) when \(H_1\) is true.
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Power of a Test (\(1-\beta\))</span><br>
-            The probability of rejecting \(H_0\) when \(H_1\) is true. (即檢定力)
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Consistent Estimator (一致估計量)</span> <span class="tag must-read">必背</span><br>
-            An estimator \(\hat{\theta}_n\) such that \(\hat{\theta}_n \xrightarrow{P} \theta\) as \(n \to \infty\). (即樣本數無限大時，估計量機率收斂至真值)。
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Sufficient Statistic (充分統計量)</span><br>
-            A statistic \(T(X)\) that contains all the information in the sample about \(\theta\). Formally, the conditional distribution of the sample given \(T\) is independent of \(\theta\).
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Complete Statistic (完備統計量)</span> <span class="tag should-read">潛力</span><br>
-            A statistic \(T\) is complete if \(E[g(T)] = 0\) for all \(\theta\) implies \(P(g(T)=0) = 1\) for all \(\theta\). (UMVUE 的先決條件)。
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Likelihood Ratio Statistic (\(\lambda\))</span> <span class="tag should-read">潛力</span><br>
-            $$ \lambda(x) = \frac{\sup_{\theta \in \Theta_0} L(\theta|x)}{\sup_{\theta \in \Theta} L(\theta|x)} $$
-            (檢定統計量的理論源頭，如 F test)。
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Mean Squared Error (MSE)</span> <span class="tag should-read">潛力</span><br>
-            \(MSE(\hat{\theta}) = E[(\hat{\theta}-\theta)^2] = Var(\hat{\theta}) + [Bias(\hat{\theta})]^2\). (必背此分解式)。
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Fisher Information</span> <span class="tag should-read">潛力</span><br>
-            \(I(\theta) = -E\left[ \frac{\partial^2}{\partial \theta^2} \ln f(X;\theta) \right]\). (計算 CRLB 用)。
-        </div>
-
-        <h3>B. 迴歸分析 (Regression)</h3>
-        <div class="definition-item">
-            <span class="def-title">Multicollinearity (共線性)</span> <span class="tag must-read">必背</span><br>
-            High correlation among independent variables (\(X\)'s), leading to unstable \(\hat{\beta}\) estimates and large standard errors.
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Heteroscedasticity (異質變異數)</span><br>
-            The variance of error terms is not constant (\(Var(\epsilon_i) \neq \sigma^2\)).
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Autocorrelation (自我相關)</span> <span class="tag must-read">必背</span><br>
-            Error terms are correlated over time (e.g., \(Cov(\epsilon_t, \epsilon_{t-1}) \neq 0\)). Commonly found in time series data.
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Coefficient of Determination (\(R^2\))</span><br>
-            The proportion of the total variation in \(Y\) that is explained by the regression model (\(SSR/SSTO\)).
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Residual vs. Error</span> <span class="tag should-read">潛力</span><br>
-            <strong>Error (\(\epsilon\)):</strong> \(Y - E[Y]\) (Unobservable, true population error).<br>
-            <strong>Residual (\(e\)):</strong> \(Y - \hat{Y}\) (Observable, sample estimation error).
-        </div>
-
-        <h3>C. 機率與隨機變數 (Probability)</h3>
-        <div class="definition-item">
-            <span class="def-title">Conditional Expectation</span><br>
-            \(E[Y|X]\) is a <strong>random variable</strong> that represents the average value of \(Y\) for a given \(X\).
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Moment Generating Function (MGF)</span> <span class="tag should-read">潛力</span><br>
-            \(M_X(t) = E[e^{tX}]\). Uniquely determines the distribution.
-        </div>
-        <div class="definition-item">
-            <span class="def-title">Convergence in Probability vs. Distribution</span> <span class="tag should-read">潛力</span><br>
-            \(\xrightarrow{P}\): Limit of probability (\(P(|X_n-X|>\epsilon) \to 0\)).<br>
-            \(\xrightarrow{d}\): Limit of CDF (\(F_n(x) \to F(x)\)).
-        </div>
-
-        <h2>第三部分：必備數理推導技巧 (SOP)</h2>
-        
-        <h3>1. 尋找 UMVUE (三步殺)</h3>
-        <ol>
-            <li><strong>Factorization Thm:</strong> 找出充分統計量 \(T\)。</li>
-            <li><strong>Unbiasedness:</strong> 找一個不偏估計量（或是修正 \(T\) 使其不偏）。</li>
-            <li><strong>Lehmann-Scheffé:</strong> 宣稱 \(T\) 是完備的（指數族性質），則該不偏估計量即為 UMVUE。</li>
-        </ol>
-
-        <h3>2. AR(1) 模型變異數推導 (必背結論)</h3>
-        <p>若 \( \epsilon_t = \rho \epsilon_{t-1} + u_t \)，其中 \(u_t \sim N(0, \sigma_u^2)\) 且 \(|\rho|<1\)，則：</p>
-        $$ Var(\epsilon_t) = \frac{\sigma_u^2}{1-\rho^2} $$
-        $$ Cov(\epsilon_t, \epsilon_{t-k}) = \frac{\sigma_u^2}{1-\rho^2} \rho^k $$
-
-        <h3>3. Cramér-Rao Lower Bound (CRLB)</h3>
-        $$ Var(\hat{\theta}) \ge \frac{1}{n I(\theta)}, \quad I(\theta) = -E\left[ \frac{\partial^2 \ln f(X;\theta)}{\partial \theta^2} \right] $$
-
-        <h2>第四部分：準備策略提醒</h2>
-        <ul>
-            <li><strong>時間分配：</strong> 迴歸分析 (30%) + 數統定理背誦 (30%) + 考古題實戰 (40%)。</li>
-            <li><strong>放棄項目：</strong> 複雜積分、無母數排序檢定 (Sign/Wilcoxon)、Black-Scholes 模型。</li>
-            <li><strong>每天任務：</strong> 默寫 2-3 個定理定義，直到能像反射動作一樣寫出來。</li>
-        </ul>
 
     </div>
 
-    <footer>
-        <p>交大經管 75 天衝刺筆記 | 祝金榜題名！</p>
-    </footer>
-</div>
-
 </body>
+
 </html>
